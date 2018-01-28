@@ -1,0 +1,24 @@
+{
+    "name": "charliekassel/array-diff",
+    "description": "Find the difference between two array's",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Charlie Kassel",
+            "email": "ck@charliekassel.com"
+        }
+	],
+	"autoload": {
+        "classmap": [
+            "src/"
+		],
+		"psr-4": {
+            "Differ\\": "src/"
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    }
+}
