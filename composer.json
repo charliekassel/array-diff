@@ -17,7 +17,9 @@
             "Differ\\": "src/"
         }
     },
-    "require": {},
+    "require": {
+		"php": ">=7.0.0"
+	},
     "require-dev": {
         "phpunit/phpunit": "^6.5"
     }

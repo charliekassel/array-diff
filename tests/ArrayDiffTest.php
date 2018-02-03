@@ -123,4 +123,24 @@ class ArrayDiffTest extends TestCase
             [['b' => 2, 'c' => 3, 'd' => null], ['b' => 2, 'c' => 5], 'c'],
         ];
     }
+
+    /**
+     * @dataProvider nestedChangedKeyProvider
+     */
+    public function testFindsNestedChangedKeys($old, $new, $expectedKey)
+    {
+        $differ = new ArrayDiff();
+        $diff = $differ->diff($old, $new);
+
+        $this->assertArrayHasKey($expectedKey, $diff['changed']['a']['changed']);
+    }
+
+    public function nestedChangedKeyProvider()
+    {
+        return [
+            [['a' => ['one' => 1, 'two' => 2, 'three' => 1, 'four' => []]], ['a' => ['one' => 1, 'two' => 1, 'three' => 1]], 'two'],
+            [['a' => ['one' => 1, 'two' => 1, 'three' => 1, 'four' => []]], ['a' => ['one' => 2, 'two' => 1, 'three' => 1]], 'one'],
+            [['a' => ['one' => 1, 'two' => 1, 'three' => 1, 'four' => []]], ['a' => ['one' => 1, 'two' => 1, 'three' => 3]], 'three'],
+        ];
+    }
 }
