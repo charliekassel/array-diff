@@ -24,5 +24,25 @@ $difference = $differ->diff($old, $new);
 
 var_dump($difference);
 
+array(3) {
+  'added' =>
+  array(0) {
+  }
+  'removed' =>
+  array(1) {
+    'a' =>
+    int(1)
+  }
+  'changed' =>
+  array(1) {
+    'c' =>
+    array(2) {
+      'old' =>
+      int(3)
+      'new' =>
+      int(5)
+    }
+  }
+}
 
 ```
