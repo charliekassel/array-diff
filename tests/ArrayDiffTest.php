@@ -143,4 +143,54 @@ class ArrayDiffTest extends TestCase
             [['a' => ['one' => 1, 'two' => 1, 'three' => 1, 'four' => []]], ['a' => ['one' => 1, 'two' => 1, 'three' => 3]], 'three'],
         ];
     }
+
+    /**
+     * @dataProvider changedValueProvider
+     * @group changeValue
+     */
+    public function testChangedValueReturnsOldAndNewValues($old, $new, $expectedKey, $oldValue, $newValue)
+    {
+        $differ = new ArrayDiff();
+        $diff = $differ->diff($old, $new);
+
+        $this->assertArrayHasKey($expectedKey, $diff['changed']);
+        $this->assertTrue(is_array($diff['changed'][$expectedKey]));
+        $this->assertArrayHasKey('old', $diff['changed'][$expectedKey]);
+        $this->assertArrayHasKey('new', $diff['changed'][$expectedKey]);
+        $this->assertSame($oldValue, $diff['changed'][$expectedKey]['old']);
+        $this->assertSame($newValue, $diff['changed'][$expectedKey]['new']);
+    }
+
+    public function changedValueProvider()
+    {
+        return [
+            [['a', 'b', 'd'], ['a', 'b', 'c'], 2, 'd', 'c'],
+            [['b' => 2, 'c' => 3], ['b' => 2, 'c' => 4], 'c', 3, 4],
+            [['b' => 2, 'c' => 3, 'd' => null], ['b' => 2, 'c' => 3, 'd' => 1], 'd', null, 1],
+            [['b' => 2, 'c' => 3, 'd' => null], ['b' => 2, 'c' => 5], 'c', 3, 5],
+        ];
+    }
+
+    /**
+     * @dataProvider nestedChangedValueProvider
+     * @group nestedChangeValue
+     */
+    public function testNestedChangedValueReturnsOldAndNewValues($old, $new, $expectedKey, $oldValue, $newValue)
+    {
+        $differ = new ArrayDiff();
+        $diff = $differ->diff($old, $new);
+
+        $this->assertArrayHasKey($expectedKey, $diff['changed']['a']['changed']);
+        $this->assertSame($oldValue, $diff['changed']['a']['changed'][$expectedKey]['old']);
+        $this->assertSame($newValue, $diff['changed']['a']['changed'][$expectedKey]['new']);
+    }
+
+    public function nestedChangedValueProvider()
+    {
+        return [
+            [['a' => ['one' => 1, 'two' => 2, 'three' => 1, 'four' => []]], ['a' => ['one' => 1, 'two' => 1, 'three' => 1]], 'two', 2, 1],
+            [['a' => ['one' => 1, 'two' => 1, 'three' => 1, 'four' => []]], ['a' => ['one' => 2, 'two' => 1, 'three' => 1]], 'one', 1, 2],
+            [['a' => ['one' => 1, 'two' => 1, 'three' => 1, 'four' => []]], ['a' => ['one' => 1, 'two' => 1, 'three' => 3]], 'three', 1, 3],
+        ];
+    }
 }
