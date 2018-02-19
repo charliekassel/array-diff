@@ -193,4 +193,25 @@ class ArrayDiffTest extends TestCase
             [['a' => ['one' => 1, 'two' => 1, 'three' => 1, 'four' => []]], ['a' => ['one' => 1, 'two' => 1, 'three' => 3]], 'three', 1, 3],
         ];
     }
+
+    /**
+     * @dataProvider nullValueProvider
+     * @group nullValue
+     */
+    public function testNullValueComparison($old, $new, $expectedChangedKey)
+    {
+        $differ = new ArrayDiff();
+        $diff = $differ->diff($old, $new);
+
+        $this->assertArrayHasKey($expectedChangedKey, $diff['changed']);
+    }
+
+    public function nullValueProvider()
+    {
+        return [
+            [['a', 'b', 'c', null], ['a', 'b', 'c', 'd'], 3],
+            [['a', 'b', 'c', null], ['a', 'b', 'c', ['d']], 3],
+            [['a', 'b', 'c', ['d']], ['a', 'b', 'c', null], 3],
+        ];
+    }
 }

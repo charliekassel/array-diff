@@ -60,7 +60,7 @@ class ArrayDiff
         }, ARRAY_FILTER_USE_BOTH);
 
         array_walk($changed, function (&$changedItem, $key) use ($old) {
-            if (is_array($changedItem)) {
+            if (is_array($changedItem) && !is_null($old[$key])) {
                 $changedItem = $this->diff($old[$key], $changedItem);
             } else {
                 $changedItem = [
