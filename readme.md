@@ -1,5 +1,7 @@
 # ArrayDiff
 
+![](https://travis-ci.org/charliekassel/array-diff.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/charliekassel/array-diff/badge.svg?branch=master)](https://coveralls.io/github/charliekassel/array-diff?branch=master)
+
 Compute the changes between two arrays.
 
 Work in progress.
